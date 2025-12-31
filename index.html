@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mwea Community Football Tournament 2026/27</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- WATERMARK FOOTBALL ICONS -->
+<div class="watermark wm1"></div>
+<div class="watermark wm2"></div>
+<div class="watermark wm3"></div>
+
+<!-- HEADER -->
+<header class="gov-header">
+  
+  <div class="header-center">
+    <h1>Mwea Community Football Tournament</h1>
+    <p>2026 / 2027 Season | Where Passion Meets Purpose</p>
+  </div>
+  <div class="header-right">
+    <img src="assets/mary-maingi.png" alt="Hon. Mary Maingi" class="brand-img">
+  </div>
+</header>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#about">About</a>
+  <a href="#teams">Teams</a>
+  <a href="#fixtures">Fixtures</a>
+  <a href="#results">Results</a>
+  <a href="#standings">Standings</a>
+  <a href="#media">Media</a>
+  <a href="#admin">Admin</a>
+</nav>
+
+<!-- ABOUT -->
+<section id="about" class="container">
+  <h2>About the Tournament</h2>
+  <p>The Mwea Community Football Tournament is a structured youth empowerment initiative aimed at identifying football talent, promoting unity, and fostering discipline and teamwork among young people across Mwea.</p>
+  <p><strong>Main Venue:</strong> GK Mwea Prisons Grounds</p>
+  <p><strong>Contact:</strong> 0743177324</p>
+  <p><strong>Email:</strong> bingimann96@gmail.com</p>
+</section>
+
+<!-- TEAMS -->
+<section id="teams" class="container">
+  <h2>Participating Teams</h2>
+  <table>
+    <tr><th>Team</th><th>Captain</th><th>Coach</th></tr>
+    <tr><td>Nguka</td><td>Peter Mwangi</td><td>John Kariuki</td></tr>
+    <tr><td>Karira</td><td>Samuel Njoroge</td><td>David Maina</td></tr>
+    <tr><td>Karima</td><td>Brian Kinyua</td><td>Joseph Waweru</td></tr>
+    <tr><td>Huruma</td><td>Allan Mutiso</td><td>Michael Otieno</td></tr>
+    <tr><td>Gakungu</td><td>Kevin Kamau</td><td>Francis Njogu</td></tr>
+    <tr><td>Ndorome</td><td>Daniel Muriithi</td><td>Paul Gichuki</td></tr>
+    <tr><td>Youngster</td><td>Eric Mwenda</td><td>James Odhiambo</td></tr>
+    <tr><td>Kiarukungu</td><td>Martin Kibet</td><td>Charles Kiprono</td></tr>
+  </table>
+</section>
+
+<!-- FIXTURES -->
+<section id="fixtures" class="container">
+  <h2>Match Fixtures</h2>
+  <table>
+    <tr><th>Date</th><th>Match</th><th>Venue</th><th>Time</th></tr>
+    <tr><td>05 Jan 2026</td><td>Nguka vs Karira</td><td>GK Mwea Prisons</td><td>10:00 AM</td></tr>
+    <tr><td>06 Jan 2026</td><td>Karima vs Huruma</td><td>GK Mwea Prisons</td><td>1:00 PM</td></tr>
+    <tr><td>07 Jan 2026</td><td>Gakungu vs Ndorome</td><td>GK Mwea Prisons</td><td>10:00 AM</td></tr>
+    <tr><td>08 Jan 2026</td><td>Youngster vs Kiarukungu</td><td>GK Mwea Prisons</td><td>1:00 PM</td></tr>
+  </table>
+</section>
+
+<!-- RESULTS -->
+<section id="results" class="container">
+  <h2>Match Results</h2>
+  <div id="resultsList"></div>
+</section>
+
+<!-- STANDINGS -->
+<section id="standings" class="container">
+  <h2>League Standings</h2>
+  <table id="standingsTable">
+    <tr>
+      <th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
+      <th>GF</th><th>GA</th><th>GD</th><th>PTS</th>
+    </tr>
+  </table>
+</section>
+
+<!-- MEDIA -->
+<section id="media" class="container">
+  <h2>Media Gallery</h2>
+  <p>Add tournament photos here later.</p>
+</section>
+
+<!-- ADMIN -->
+<section id="admin" class="container">
+  <h2>Admin Panel</h2>
+  <input type="password" id="adminPass" placeholder="Enter admin password">
+  <button onclick="login()">Login</button>
+  <div id="adminArea" style="display:none;">
+    <input id="match" placeholder="Match e.g Nguka vs Karira">
+    <input id="score" placeholder="Score e.g 2 - 1">
+    <button onclick="addResult()">Add Result</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026/27 Mwea Community Football Tournament | Supported by Hon. Mary Maingi</p>
+  <p>Contact: 0743177324 | Email: bingimann96@gmail.com</p>
+</footer>
+
+<!-- SCRIPT -->
+<script>
+let results = JSON.parse(localStorage.getItem("results")) || [];
+const teams = ["Nguka","Karira","Karima","Huruma","Gakungu","Ndorome","Youngster","Kiarukungu"];
+
+function login(){
+  if(document.getElementById("adminPass").value==="mwea2026"){
+    document.getElementById("adminArea").style.display="block";
+  }else{alert("Access denied");}
+}
+
+function addResult(){
+  const match=document.getElementById("match").value;
+  const score=document.getElementById("score").value;
+  if(!match||!score)return alert("Enter both match and score");
+  results.push({match,score});
+  localStorage.setItem("results",JSON.stringify(results));
+  displayResults();
+  updateStandings();
+}
+
+function displayResults(){
+  document.getElementById("resultsList").innerHTML=results.map(r=>`<p><strong>${r.match}</strong> : ${r.score}</p>`).join("");
+}
+
+function updateStandings(){
+  let table={};
+  teams.forEach(t=>table[t]={P:0,W:0,D:0,L:0,GF:0,GA:0,GD:0,PTS:0});
+  results.forEach(r=>{
+    const [teamA,teamB]=r.match.split(" vs ").map(s=>s.trim());
+    const [scoreA,scoreB]=r.score.split("-").map(s=>parseInt(s.trim()));
+    if(!teamA||!teamB||isNaN(scoreA)||isNaN(scoreB)) return;
+    table[teamA].P++; table[teamB].P++;
+    table[teamA].GF+=scoreA; table[teamA].GA+=scoreB;
+    table[teamB].GF+=scoreB; table[teamB].GA+=scoreA;
+    table[teamA].GD=table[teamA].GF-table[teamA].GA;
+    table[teamB].GD=table[teamB].GF-table[teamB].GA;
+    if(scoreA>scoreB){table[teamA].W++; table[teamB].L++; table[teamA].PTS+=3;}
+    else if(scoreB>scoreA){table[teamB].W++; table[teamA].L++; table[teamB].PTS+=3;}
+    else {table[teamA].D++; table[teamB].D++; table[teamA].PTS++; table[teamB].PTS++;}
+  });
+  let sorted=Object.keys(table).sort((a,b)=>{
+    if(table[b].PTS!==table[a].PTS)return table[b].PTS-table[a].PTS;
+    if(table[b].GD!==table[a].GD)return table[b].GD-table[a].GD;
+    return table[b].GF-table[a].GF;
+  });
+  let html="<tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>PTS</th></tr>";
+  sorted.forEach(t=>{
+    const s=table[t];
+    html+=`<tr><td>${t}</td><td>${s.P}</td><td>${s.W}</td><td>${s.D}</td><td>${s.L}</td><td>${s.GF}</td><td>${s.GA}</td><td>${s.GD}</td><td>${s.PTS}</td></tr>`;
+  });
+  document.getElementById("standingsTable").innerHTML=html;
+}
+
+// INITIAL LOAD
+displayResults();
+updateStandings();
+</script>
+</body>
+</html>
